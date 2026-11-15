@@ -1,0 +1,69 @@
+{
+  "certificate_version": "1.0.0",
+  "clinical_bia_7freq_guarded": {
+    "R0_ohm": 620.0,
+    "R_inf_ohm": 410.0,
+    "Td_ns": 4.0,
+    "alpha": 0.8,
+    "fc_Hz": 50000.0,
+    "parasitic_artifact_flagged": false,
+    "rel_rms_residual_pct": 0.0
+  },
+  "legacy_hook_mismatch_corrupted": {
+    "R0_ohm": 620.0,
+    "R_inf_ohm": 410.0,
+    "Td_ns": -10.0,
+    "alpha": 0.8,
+    "fc_Hz": 50000.0,
+    "parasitic_artifact_flagged": true,
+    "rel_rms_residual_pct": 0.0
+  },
+  "legacy_unguarded_45pF_shunt_corrupted": {
+    "R0_ohm": 620.8513,
+    "R_inf_ohm": 405.7839,
+    "Td_ns": 19.9319,
+    "alpha": 0.79095,
+    "fc_Hz": 50825.437,
+    "parasitic_artifact_flagged": true,
+    "rel_rms_residual_pct": 0.12573
+  },
+  "must_fail_controls": [
+    {
+      "control": "unguarded_45pF_stray_capacitance_passes_without_negative_Td_flag",
+      "rejected": true
+    },
+    {
+      "control": "two_wire_150ohm_contact_impedance_preserves_R0_accuracy",
+      "rejected": true
+    },
+    {
+      "control": "single_50khz_frequency_identifies_four_cole_parameters",
+      "rejected": true
+    },
+    {
+      "control": "sparse_7freq_sweep_degrades_conditioning_over_25pct",
+      "rejected": true
+    },
+    {
+      "control": "square_patch_cell_constant_equals_linear_wenner_2pi_a",
+      "rejected": true
+    }
+  ],
+  "repository": "aska-physical/impedence-analyzers",
+  "sparse_vs_50freq_efficiency": {
+    "cond_50freq": 14.34,
+    "cond_7freq": 13.851,
+    "conditioning_ratio": 0.9659,
+    "sweep_point_reduction_x": 7.14
+  },
+  "square_patch_25mm_cell_constant_m": 0.268152,
+  "structural_ndt_7freq_guarded": {
+    "R0_ohm": 1850.0,
+    "R_inf_ohm": 240.0,
+    "Td_ns": 3.5,
+    "alpha": 0.72,
+    "fc_Hz": 18000.0,
+    "parasitic_artifact_flagged": false,
+    "rel_rms_residual_pct": 0.0
+  }
+}
