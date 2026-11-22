@@ -1,0 +1,246 @@
+{
+  "claim_status": "model_and_checker_only_no_bench_measurement",
+  "dock_thread": "aska-physical/dock#8:P5",
+  "issue_bridge": "aska-physical/impedence-analyzers#2",
+  "mode": "standalone_pure_zq",
+  "overall_verified": true,
+  "payload_sha256": "b77d3af2ce6deff4a9746850b81311f25af961c282335193db7d2e7b536a6441",
+  "pillar1_laplacian_rank1_kelvin_patch": {
+    "bridge_disconnection_guard_verified": true,
+    "center_via_symmetry_blind_spot_exact_zero": true,
+    "mesh_1layer_boundary_cut_0_1": {
+      "delta_g": "1/1",
+      "delta_r_4w_direct": "15/56",
+      "delta_r_4w_sm": "15/56",
+      "delta_r_eff_dec": "1.339286",
+      "delta_r_eff_direct": "75/56",
+      "delta_r_eff_sm": "75/56",
+      "edge": [
+        0,
+        1
+      ],
+      "g_edge": "1/1",
+      "r_4w_base": "1/4",
+      "r_4w_post": "29/56",
+      "r_eff_base": "5/4",
+      "r_eff_post": "145/56",
+      "rayleigh_monotone_nonnegative": true,
+      "rel_delta_r_eff_pct": "107.1429",
+      "sherman_morrison_matches_direct_exact": true
+    },
+    "mesh_1layer_edges": 12,
+    "mesh_1layer_interior_cut_4_5": {
+      "delta_g": "1/1",
+      "delta_r_4w_direct": "3/20",
+      "delta_r_4w_sm": "3/20",
+      "delta_r_eff_dec": "0.150000",
+      "delta_r_eff_direct": "3/20",
+      "delta_r_eff_sm": "3/20",
+      "edge": [
+        4,
+        5
+      ],
+      "g_edge": "1/1",
+      "r_4w_base": "1/4",
+      "r_4w_post": "2/5",
+      "r_eff_base": "5/4",
+      "r_eff_post": "7/5",
+      "rayleigh_monotone_nonnegative": true,
+      "rel_delta_r_eff_pct": "12.0000",
+      "sherman_morrison_matches_direct_exact": true
+    },
+    "mesh_1layer_nodes": 9,
+    "mesh_2layer_bondline_via_center_symmetry_cut_4_13": {
+      "delta_g": "1/2",
+      "delta_r_4w_direct": "0/1",
+      "delta_r_4w_sm": "0/1",
+      "delta_r_eff_dec": "0.000000",
+      "delta_r_eff_direct": "0/1",
+      "delta_r_eff_sm": "0/1",
+      "edge": [
+        4,
+        13
+      ],
+      "g_edge": "1/2",
+      "r_4w_base": "167/819",
+      "r_4w_post": "167/819",
+      "r_eff_base": "895/819",
+      "r_eff_post": "895/819",
+      "rayleigh_monotone_nonnegative": true,
+      "rel_delta_r_eff_pct": "0.0000",
+      "sherman_morrison_matches_direct_exact": true
+    },
+    "mesh_2layer_bondline_via_offcenter_cut_0_9": {
+      "delta_g": "1/2",
+      "delta_r_4w_direct": "35530/12202281",
+      "delta_r_4w_sm": "35530/12202281",
+      "delta_r_eff_dec": "0.069154",
+      "delta_r_eff_direct": "1687675/24404562",
+      "delta_r_eff_sm": "1687675/24404562",
+      "edge": [
+        0,
+        9
+      ],
+      "g_edge": "1/2",
+      "r_4w_base": "167/819",
+      "r_4w_post": "280407/1355809",
+      "r_eff_base": "895/819",
+      "r_eff_post": "3150765/2711618",
+      "rayleigh_monotone_nonnegative": true,
+      "rel_delta_r_eff_pct": "6.3282",
+      "sherman_morrison_matches_direct_exact": true
+    },
+    "mesh_2layer_edges": 33,
+    "mesh_2layer_nodes": 18,
+    "mesh_2layer_surface_boundary_cut_0_1": {
+      "delta_g": "1/1",
+      "delta_r_4w_direct": "27949955/182124306",
+      "delta_r_4w_sm": "27949955/182124306",
+      "delta_r_eff_dec": "0.822469",
+      "delta_r_eff_direct": "149791675/182124306",
+      "delta_r_eff_sm": "149791675/182124306",
+      "edge": [
+        0,
+        1
+      ],
+      "g_edge": "1/1",
+      "r_4w_base": "167/819",
+      "r_4w_post": "3099353/8672586",
+      "r_eff_base": "895/819",
+      "r_eff_post": "16610305/8672586",
+      "rayleigh_monotone_nonnegative": true,
+      "rel_delta_r_eff_pct": "75.2628",
+      "sherman_morrison_matches_direct_exact": true
+    },
+    "mesh_2layer_surface_interior_cut_4_5": {
+      "delta_g": "1/1",
+      "delta_r_4w_direct": "202521/2192008",
+      "delta_r_4w_sm": "202521/2192008",
+      "delta_r_eff_dec": "0.092391",
+      "delta_r_eff_direct": "202521/2192008",
+      "delta_r_eff_sm": "202521/2192008",
+      "edge": [
+        4,
+        5
+      ],
+      "g_edge": "1/1",
+      "r_4w_base": "167/819",
+      "r_4w_post": "64235/216792",
+      "r_eff_base": "895/819",
+      "r_eff_post": "256939/216792",
+      "rayleigh_monotone_nonnegative": true,
+      "rel_delta_r_eff_pct": "8.4545",
+      "sherman_morrison_matches_direct_exact": true
+    },
+    "offcenter_via_cut_strictly_positive": true,
+    "pillar_verified": true,
+    "substrate_layer_reduces_surface_cut_shift": true
+  },
+  "pillar2_cole_span_identifiability_split": {
+    "alpha_half_in_span_exact_zero_residual": true,
+    "baseline_params_ohm_hz": {
+      "R0_ohm": "1850/1",
+      "R_inf_ohm": "240/1",
+      "fc_Hz": "18000/1"
+    },
+    "fittable_parameters": [
+      "R_inf_ohm",
+      "R0_ohm",
+      "fc_Hz",
+      "alpha",
+      "Td_ns"
+    ],
+    "fixed_unmodeled_in_fit": [
+      "C_stray_pF",
+      "hook_lead_ns"
+    ],
+    "in_span_fiber_cut_eval": {
+      "baseline_shift_flagged": true,
+      "collinearity_obstruction_triples": 0,
+      "fitted_r0_dec": "1948.6963",
+      "fitted_r0_ohm": "59150827850/30354051",
+      "fitted_r_inf_dec": "338.6963",
+      "fitted_r_inf_ohm": "10280805740/30354051",
+      "gate_passed": false,
+      "mean_rel_residual_sq_dec": "0.00000000",
+      "rel_shift_r0_pct": "5.3349",
+      "rel_shift_r_inf_pct": "41.1235",
+      "residual_exact_zero": true,
+      "residual_gate_flagged": false,
+      "total_triples": 35
+    },
+    "injected_in_span_delta_r_dec": "98.6963",
+    "injected_in_span_delta_r_ohm": "2995833500/30354051",
+    "injected_out_of_span_beta_siemens": "1/2000",
+    "intact_baseline_eval": {
+      "baseline_shift_flagged": false,
+      "collinearity_obstruction_triples": 0,
+      "fitted_r0_dec": "1850.0000",
+      "fitted_r0_ohm": "1850/1",
+      "fitted_r_inf_dec": "240.0000",
+      "fitted_r_inf_ohm": "240/1",
+      "gate_passed": true,
+      "mean_rel_residual_sq_dec": "0.00000000",
+      "rel_shift_r0_pct": "0.0000",
+      "rel_shift_r_inf_pct": "0.0000",
+      "residual_exact_zero": true,
+      "residual_gate_flagged": false,
+      "total_triples": 35
+    },
+    "out_of_span_shunt_eval": {
+      "baseline_shift_flagged": true,
+      "collinearity_obstruction_triples": 35,
+      "fitted_r0_dec": "1843.8942",
+      "fitted_r0_ohm": "1496592694590020604166628402210669019231798029897620530277426070456974923649815152702362180375869212765696124825646310290302987732463701555179410071298527396758253059084491855577212229409903581604833625909772404929907447954801499994785664258642187468131180587878155392113458631909442599746123811873246684084623413840937904651805837244613264038027042010299195037843373197474188921785321820631212728168096832921761548929966282920438612157578893793576660764706657952899857297566614263159023697464150322536448302213476955323925373065449203080755517283284952468198488647226266494090109652009149184683555856921802309283231237994071336111725046960930665013755445610461733480640306398720185166322264294343021548741763143703171989560672787855643782587354812867269037270499353948944754637006756883938460490496959657446170197492574773085487976202857352678248987832046245124460185754566757708969236127757378363428458587538504716923021496351101764416413978840852421178830544289696531120310445746905984965638053164323178680387530259107209649161704537083703438606500930824225866647071727004192447601337642836983451065414248273513784456966089935016352944710110384176470/811647812895715912641706527416315284774478871042056611990408230538154167723729910258100638379063413179921220513603418232630614480904338949161567739661151052391651881864389695992825726068012282784194309706857854418563304838152105649988955617579827494274115255728878017622383712567218494758909525006627067034801315574042049786218129066717129343117970999570204119897505445496328639192178280237952880261602198281452086459725806999547596729829392900900385782832863259760649609111726337956886859186880937409424064541966616484144278308072197218729049144146579221832506389187462427070634724405175870054267645179230932086651594862976228021417288970971472524123423566473562562522593791924169516288208678776867652430643218438788210133738834831913647888621003288557178564984536065965551789813907799711959643268582123097948414855009543438152450629286085234083289226269787984622356367653348856190861054173049774756652623038126293575177082717926281065673115475458574952503335863625907255299291184480782914673498813276701613346717678990417013684612706045677360081958849027492978037325613743260455208358592258436824360337296569749549149982693244414543467115103598823",
+      "fitted_r_inf_dec": "45.1834",
+      "fitted_r_inf_ohm": "56261084705530524726268268982965802351976306211347210302878819943565294247803084963650560/1245170724350682940486332310041038780573407105943875621453494265238667197908907034097129",
+      "gate_passed": false,
+      "mean_rel_residual_sq_dec": "0.09396878",
+      "rel_shift_r0_pct": "0.3300",
+      "rel_shift_r_inf_pct": "81.1736",
+      "residual_exact_zero": false,
+      "residual_gate_flagged": true,
+      "total_triples": 35
+    },
+    "pillar_verified": true,
+    "structural_ndt_freqs_hz": [
+      5000,
+      12000,
+      28000,
+      50000,
+      110000,
+      250000,
+      600000
+    ]
+  },
+  "pillar3_dock8_receiving_controls": {
+    "all_controls_verified": true,
+    "claim_status": "model_and_checker_only_no_bench_measurement",
+    "controls": [
+      {
+        "control": "intact_baseline_passes_both_gates",
+        "expected": "PASS",
+        "passed": true
+      },
+      {
+        "control": "in_span_fiber_cut_missed_by_residual_caught_by_baseline_shift",
+        "expected": "REJECT_BY_BASELINE_SHIFT",
+        "passed": true
+      },
+      {
+        "control": "out_of_span_shunt_caught_by_cole_manifold_obstruction",
+        "expected": "REJECT_BY_RESIDUAL_OBSTRUCTION",
+        "passed": true
+      },
+      {
+        "control": "bridge_cut_disconnection_fails_closed",
+        "expected": "REJECT_DISCONNECTED",
+        "passed": true
+      }
+    ],
+    "pillar_verified": true
+  },
+  "schema_version": "impedence_analyzers.ndt_rank1_identifiability.v1",
+  "study_id": "NDT-RANK1-P5-STUDY",
+  "target_repo": "aska-physical/impedence-analyzers"
+}
