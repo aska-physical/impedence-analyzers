@@ -17,6 +17,16 @@ ROOT = Path(__file__).resolve().parent
 CERT_PATH = ROOT / "results" / "certificate.json"
 
 
+class CheckFailure(RuntimeError):
+    """Raised when a physical invariant or must-fail control fails verification."""
+
+
+def require(ok: bool, message: str) -> None:
+    """Enforce a verification invariant regardless of Python -O optimization."""
+    if not ok:
+        raise CheckFailure(message)
+
+
 def cole_spectrum(
     freqs_Hz: np.ndarray,
     R_inf: float,
@@ -119,7 +129,10 @@ def square_tetrapolar_cell_constant(side_a_m: float) -> float:
     v_sense_neg = (1.0 / (2.0 * math.pi)) * (1.0 / (side_a_m * math.sqrt(2.0)) - 1.0 / side_a_m)
     k_numeric = 1.0 / (v_sense_pos - v_sense_neg)
     k_closed = (2.0 * math.pi * side_a_m) / (2.0 - math.sqrt(2.0))
-    assert abs(k_numeric - k_closed) < 1e-14
+    require(
+        abs(k_numeric - k_closed) < 1e-14,
+        f"square cell constant mismatch: numeric={k_numeric} vs closed={k_closed}",
+    )
     return k_closed
 
 
@@ -129,35 +142,60 @@ def run_verification() -> dict[str, Any]:
 
     z_clin_guarded = cole_spectrum(freqs_7, 410.0, 620.0, 50000.0, 0.80, Td_ns=4.0, C_stray_pF=0.0)
     fit_clin_ok = fit_cole_with_artifact_gate(freqs_7, z_clin_guarded)
-    assert not fit_clin_ok["parasitic_artifact_flagged"]
-    assert abs(fit_clin_ok["R_inf_ohm"] - 410.0) / 410.0 < 1e-4
+    require(
+        not fit_clin_ok["parasitic_artifact_flagged"],
+        f"guarded clinical BIA unexpectedly flagged as parasitic artifact: {fit_clin_ok}",
+    )
+    require(
+        abs(fit_clin_ok["R_inf_ohm"] - 410.0) / 410.0 < 1e-4,
+        f"guarded clinical BIA R_inf relative error >= 1e-4: got {fit_clin_ok['R_inf_ohm']}",
+    )
 
     z_clin_hook = cole_spectrum(freqs_50, 410.0, 620.0, 50000.0, 0.80, Td_ns=2.0, C_stray_pF=0.0, hook_lead_ns=12.0)
     fit_clin_corrupt = fit_cole_with_artifact_gate(freqs_50, z_clin_hook)
-    assert fit_clin_corrupt["parasitic_artifact_flagged"] and fit_clin_corrupt["Td_ns"] < -1.5
+    require(
+        fit_clin_corrupt["parasitic_artifact_flagged"] and fit_clin_corrupt["Td_ns"] < -1.5,
+        f"hook-lead mismatch artifact was not flagged with Td_ns < -1.5: {fit_clin_corrupt}",
+    )
     z_clin_shunt = cole_spectrum(freqs_50, 410.0, 620.0, 50000.0, 0.80, Td_ns=2.0, C_stray_pF=45.0, hook_lead_ns=0.0)
     fit_clin_shunt = fit_cole_with_artifact_gate(freqs_50, z_clin_shunt)
-    assert fit_clin_shunt["parasitic_artifact_flagged"] and fit_clin_shunt["Td_ns"] > 10.0
+    require(
+        fit_clin_shunt["parasitic_artifact_flagged"] and fit_clin_shunt["Td_ns"] > 10.0,
+        f"45 pF shunt capacitance artifact was not flagged with Td_ns > 10.0: {fit_clin_shunt}",
+    )
 
     z_ndt_guarded = cole_spectrum(freqs_7, 240.0, 1850.0, 18000.0, 0.72, Td_ns=3.5, C_stray_pF=0.0)
     fit_ndt_ok = fit_cole_with_artifact_gate(freqs_7, z_ndt_guarded)
-    assert not fit_ndt_ok["parasitic_artifact_flagged"]
-    assert abs(fit_ndt_ok["R0_ohm"] - 1850.0) / 1850.0 < 1e-4
+    require(
+        not fit_ndt_ok["parasitic_artifact_flagged"],
+        f"guarded structural NDT unexpectedly flagged as parasitic artifact: {fit_ndt_ok}",
+    )
+    require(
+        abs(fit_ndt_ok["R0_ohm"] - 1850.0) / 1850.0 < 1e-4,
+        f"guarded structural NDT R0 relative error >= 1e-4: got {fit_ndt_ok['R0_ohm']}",
+    )
 
     cond_50 = fisher_condition_number(freqs_50, (410.0, 620.0, 50000.0, 0.80))
     cond_7 = fisher_condition_number(freqs_7, (410.0, 620.0, 50000.0, 0.80))
-    assert cond_7 < 1.25 * cond_50
+    require(
+        cond_7 < 1.25 * cond_50,
+        f"sparse 7-freq Fisher conditioning degraded >= 25%: cond_7={cond_7:.3f}, cond_50={cond_50:.3f}",
+    )
 
     k_sq_25mm = square_tetrapolar_cell_constant(0.025)
 
     controls = [
-        {"control": "unguarded_45pF_stray_capacitance_passes_without_negative_Td_flag", "rejected": fit_clin_corrupt["parasitic_artifact_flagged"]},
+        {
+            "control": "unguarded_45pF_stray_capacitance_passes_without_negative_Td_flag",
+            "rejected": bool(fit_clin_corrupt["parasitic_artifact_flagged"] and fit_clin_shunt["parasitic_artifact_flagged"]),
+        },
         {"control": "two_wire_150ohm_contact_impedance_preserves_R0_accuracy", "rejected": abs((620.0 + 300.0) - 620.0) / 620.0 > 0.40},
         {"control": "single_50khz_frequency_identifies_four_cole_parameters", "rejected": bool(np.linalg.matrix_rank(np.ones((2, 4))) < 4)},
         {"control": "sparse_7freq_sweep_degrades_conditioning_over_25pct", "rejected": cond_7 / cond_50 < 1.25},
         {"control": "square_patch_cell_constant_equals_linear_wenner_2pi_a", "rejected": abs(k_sq_25mm - 2.0 * math.pi * 0.025) > 0.05},
     ]
-    assert all(c["rejected"] for c in controls)
+    failed_controls = [c["control"] for c in controls if not c["rejected"]]
+    require(not failed_controls, f"must-fail controls did not reject: {failed_controls}")
 
     return {
         "repository": "aska-physical/impedence-analyzers",
@@ -188,7 +226,9 @@ def main() -> int:
     if not CERT_PATH.exists() or json.loads(CERT_PATH.read_text(encoding="utf-8")) != cert:
         print("[FAIL] results/certificate.json mismatch or missing", file=sys.stderr)
         return 1
-    print("[PASS] impedence-analyzers Cole + negative-Td gate + point-charge patch checks (5/5 controls): OK")
+    passed_controls = sum(1 for c in cert["must_fail_controls"] if c["rejected"])
+    total_controls = len(cert["must_fail_controls"])
+    print(f"[PASS] impedence-analyzers Cole + negative-Td gate + point-charge patch checks ({passed_controls}/{total_controls} controls): OK")
     return 0
 
 
