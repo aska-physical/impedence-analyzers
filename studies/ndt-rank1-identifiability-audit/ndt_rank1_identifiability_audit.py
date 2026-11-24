@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Pure-Z/Q exact receiving-side checker for aska-physical/impedence-analyzers (dock#8 P5 + Issue #2):
 Conductance-Laplacian rank-1 fiber/bond cut Delta R_eff (Sherman-Morrison exact cross-check on 1-layer
-and 2-layer tetrapolar square Kelvin patches) and exact-Q Cole 5-parameter span identifiability split
-(in-span resistive fiber cut missed by residual gate vs. out-of-span parasitic shunt caught by
-exact algebraic Cole-manifold obstruction).
+and 2-layer tetrapolar square Kelvin patches) and exact-Q zero-delay (alpha=1, Td=0) Cole slice
+identifiability split (in-span resistive fiber cut missed by residual gate vs. out-of-span parasitic
+shunt caught by exact algebraic Cole-manifold obstruction on the zero-delay slice).
 
 Claim status: model and receiving-side checker only (no bench measurement attached; per dock#8).
 Strict discipline: pure Python 3 stdlib (int / Fraction only), zero floats, zero bare asserts,
@@ -271,7 +271,7 @@ def _build_square_kelvin_2layer() -> tuple[int, list[tuple[int, int, Fraction]]]
 
 
 # ==============================================================================
-# Pillar 2: Exact-Q Cole 5-Parameter Span Identifiability Split (dock#8 P5)
+# Pillar 2: Exact-Q Cole Zero-Delay (alpha=1, Td=0) Slice Identifiability Split (dock#8 P5)
 # ==============================================================================
 
 def _c_add(a: tuple[Fraction, Fraction], b: tuple[Fraction, Fraction]) -> tuple[Fraction, Fraction]:
@@ -337,8 +337,10 @@ def evaluate_cole_debye_obstruction_exact_q(
 ) -> dict[str, Any]:
     """Exact-Q receiving-side checker:
     1. Tests exact collinearity invariant R(u) = R_inf' + (1/gamma) * (-Im Z(u) / u) on all triples.
-    2. Solves exact-Q global least-squares (R_inf', 1/gamma) and recovers exact R0' and exact relative
-       residual squared across all frequencies (zero local minima, zero floats).
+    2. Solves the exact-Q staged linear least-squares fit on the zero-delay (alpha=1, Td=0) slice
+       (fitting (R_inf', 1/gamma) on Re(Z) first, then recovering exact R0' and relative residual
+       squared across all frequencies; note this is a staged linear fit on the zero-delay slice,
+       not an unconstrained global 5-parameter nonlinear least-squares minimum).
     3. Separates residual-gate detection (out-of-span defects) from baseline-shift detection (in-span defects).
     """
     if type(us) not in (list, tuple) or type(zs) not in (list, tuple) or len(us) != len(zs) or len(us) < 3:
@@ -499,12 +501,12 @@ def build_identifiability_certificate() -> dict[str, Any]:
         ),
     }
 
-    # Pillar 2: dock#8 P5 Cole 5-parameter span identifiability split (exact-Q at verify.py's 7 NDT freqs!)
+    # Pillar 2: dock#8 P5 Cole zero-delay (alpha=1, Td=0) slice identifiability split (exact-Q at verify.py's 7 NDT freqs!)
     r_inf_ref = Fraction(240, 1)
     r0_ref = Fraction(1850, 1)
     fc_ref = Fraction(18000, 1)
     us_7 = [Fraction(f, 1) / fc_ref for f in STRUCTURAL_NDT_FREQS_HZ]
-    # Scale dimensionless 2-layer surface-boundary cut Delta R_eff into ohms (R_sheet = 120 ohm -> ~65.7 ohm!)
+    # Scale dimensionless 2-layer surface-boundary cut Delta R_eff into ohms (R_sheet = 120 ohm -> ~98.6963 ohm)
     r_sheet_ohm = Fraction(120, 1)
     delta_r_cut_ohm = r_sheet_ohm * dr_2l
     shift_limit = Fraction(5, 100)       # 5% baseline shift threshold
