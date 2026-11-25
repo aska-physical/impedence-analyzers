@@ -9,6 +9,24 @@
     "parasitic_artifact_flagged": false,
     "rel_rms_residual_pct": 0.0
   },
+  "explicit_45pF_shunt_identified": {
+    "C_stray_pF": 45.0,
+    "R0_ohm": 620.0,
+    "R_inf_ohm": 410.0,
+    "Td_ns": 2.0,
+    "alpha": 0.8,
+    "fc_Hz": 50000.0,
+    "rel_rms_residual_pct": 0.0,
+    "stray_capacitance_flagged": true
+  },
+  "extended_fisher_identifiability": {
+    "cole_plus_c_stray_and_r_contact_params": 6,
+    "cole_plus_c_stray_and_r_contact_rank": 5,
+    "cole_plus_c_stray_cond": 26.786,
+    "cole_plus_c_stray_params": 5,
+    "cole_plus_c_stray_rank": 5,
+    "series_r_contact_structurally_unidentifiable": true
+  },
   "legacy_hook_mismatch_corrupted": {
     "R0_ohm": 620.0,
     "R_inf_ohm": 410.0,
@@ -47,6 +65,14 @@
     {
       "control": "square_patch_cell_constant_equals_linear_wenner_2pi_a",
       "rejected": true
+    },
+    {
+      "control": "series_contact_resistance_separates_from_bulk_R_without_4wire_kelvin",
+      "rejected": true
+    },
+    {
+      "control": "half_space_kernel_approximates_2mm_thin_laminate_within_20pct",
+      "rejected": true
     }
   ],
   "repository": "aska-physical/impedence-analyzers",
@@ -54,6 +80,7 @@
     "cond_50freq": 14.34,
     "cond_7freq": 13.851,
     "conditioning_ratio": 0.9659,
+    "single_50khz_cole_jacobian_rank": 2,
     "sweep_point_reduction_x": 7.14
   },
   "square_patch_25mm_cell_constant_m": 0.268152,
@@ -65,5 +92,19 @@
     "fc_Hz": 18000.0,
     "parasitic_artifact_flagged": false,
     "rel_rms_residual_pct": 0.0
+  },
+  "thin_laminate_2mm_slab_kernel": {
+    "K_2d_logarithmic_asymptote_m": 0.018129,
+    "K_slab_exact_m": 0.018129,
+    "a_over_t_ratio": 12.5,
+    "half_space_overestimate_factor_x": 14.791,
+    "side_a_m": 0.025,
+    "thickness_t_m": 0.002
+  },
+  "two_wire_contact_cpe_corrupted": {
+    "R0_relative_error_pct": 1617.377,
+    "fitted_R0_ohm": 10647.7395,
+    "rel_rms_residual_pct": 3.06898,
+    "true_R0_ohm": 620.0
   }
 }

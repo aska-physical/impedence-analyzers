@@ -15,12 +15,14 @@ In [`Foundation-0/nhanes-bioimpedance`](https://github.com/Foundation-0/nhanes-b
 1. **Actively Guarded 7-Frequency Schedule (`5, 12, 28, 50, 110, 250, 600 kHz`):**
    - Cuts sweep time and microcontroller energy by **$7.14\times$** vs. 50-point analyzers while achieving **superior normalized Jacobian conditioning (`13.85` vs. `14.34`**, ratio `0.9659`) by concentrating samples around dispersion knees and anchoring $50\text{ kHz}$.
    - Recovers exact Cole parameters $(R_\infty, R_0, f_c, \alpha, T_d)$ to **`0.00000%` RMS residual** on both Clinical BIA ($410 / 620\,\Omega, 50\text{ kHz}, \alpha = 0.80$) and Structural Concrete/CFRP Bondline Moisture NDT ($240 / 1850\,\Omega, 18\text{ kHz}, \alpha = 0.72$, [Construction EIS](https://www.researchgate.net/publication/321206389_Impedance_spectroscopy_as_a_tool_for_moisture_uptake_monitoring_in_construction_composites_during_service)).
-2. **Built-In Dual Parasitic Artifact Gate (`verify.py`):**
-   - Automatically flags **both** contact-mismatch Hook-effect phase lead ($T_d = -10.0\text{ ns} < -1.5\text{ ns}$) and unguarded $45\text{ pF}$ cable shunt capacitance ($T_d = +19.93\text{ ns} > +10.0\text{ ns}$, which silently biases $R_\infty$ in unguarded analyzers).
-3. **Exact Square Tetrapolar Patch Cell Constant (Connecting `point-charges` & `incentre-lattices`):**
-   - For a dry carbon-elastomer square 4-electrode Kelvin patch of side $a$ on a half-space, image-charge summation yields exact geometric factor
+2. **Built-In Dual Parasitic Artifact Gate + Explicit $C_{\text{stray}}$ / Contact Fisher Analysis (`verify.py`):**
+   - Automatically flags **both** contact-mismatch Hook-effect phase lead ($T_d = -10.0\text{ ns} < -1.5\text{ ns}$) and unguarded $45\text{ pF}$ cable shunt capacitance ($T_d = +19.93\text{ ns} > +10.0\text{ ns}$), while the explicit 6-parameter residual (`fit_cole_with_stray_capacitance`) unaliases $C_{\text{stray}} = 45.0\text{ pF}$ and recovers $R_\infty = 410.0\,\Omega$.
+   - Verifies single-frequency unidentifiability directly on the real $50\text{ kHz}$ Cole Jacobian ($\operatorname{rank}(\partial(\operatorname{Re}Z,\operatorname{Im}Z)/\partial\theta) = 2 < 4$), synthesizes and fits a live two-wire $2\times 150\,\Omega$ contact+CPE spectrum, and proves series contact resistance $R_{\text{contact}}$ is rank-deficient against bulk $(R_\infty, R_0)$ without 4-wire Kelvin sensing.
+3. **Exact Square Tetrapolar Patch Cell Constant — Half-Space & Finite-Thickness Laminate Kernel (Connecting `point-charges` & `incentre-lattices`):**
+   - For a thick half-space ($t \gg a$), image-charge summation yields exact geometric factor
      $$K_{\text{square}}(a) = \frac{2\pi a}{2 - \sqrt{2}} \qquad (0.268152\text{ m at } a = 25\text{ mm}),$$
      where $c = 2 - \sqrt{2}$ is the exact incentre constant of [`Foundation-0/incentre-lattices`](https://github.com/Foundation-0/incentre-lattices).
+   - For finite-thickness CFRP/concrete laminates ($a/t \gtrsim 1$), `square_tetrapolar_slab_cell_constant(a, t)` evaluates the exact insulated-slab method-of-images Green's function, converging to the 2D logarithmic sheet kernel $K_{\text{sheet}}(t) = \frac{2\pi t}{\ln 2}$ ($0.018129\text{ m}$ at $t = 2\text{ mm}$, $a = 25\text{ mm}$ — where the half-space kernel overstates resistivity by **$14.79\times$**).
 
 ## Reproduce & Verify
 
